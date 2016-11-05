@@ -25,7 +25,11 @@ def randgrid(grid):
         for y in range(len(grid)):
             grid[x,y] = randint(0,1)
 
-#Game
+# Blinker test case. Three values in a row flips to three in a column and vice versa.
+def blinker(grid):
+    for x in range(2, 5):
+        for y in range(4,5):
+            grid[x, y] = 1
 
 #Takes as input the coordinates (x,y) and returns the sum of the neighbors
 def neighbors(posh,posv):
@@ -33,24 +37,32 @@ def neighbors(posh,posv):
     num_living_cells=0
     for i in range(3):
         for j in range(3):
-            if posv+rot[j] < len(grid) and posv+rot[j] >= 0 and posh+rot[i] < len(grid) and posh+rot[i] >= 0:
-                num_living_cells+=grid[posv+rot[j],posh+rot[i]]
+            ver = posv+rot[j]
+            hor = posh+rot[i]
+            if ver < n_row and ver >= 0 and hor < n_col and hor >= 0:
+                num_living_cells += grid[ver, hor]
     return num_living_cells-grid[posv,posh]
 
 #Apply the rules
-def tick(grid):
+def tick(Grid):
     ncount = 0
-    for x in range(len(grid)):
-        for y in range(len(grid)):
-            ncount = neighbors(x,y)
-            #rules 1-3
-            if grid[x,y] == 1:
+    temp = np.zeros(zeroes).reshape(n_row, n_col)
+    for x in range(len(Grid)):
+        for y in range(len(Grid)):
+            ncount = neighbors(y,x)
+            # rules 1-3
+            if Grid[x, y] == 1:
                 if ncount < 2 or ncount > 3:
-                    grid[x,y] = 0
-            #rule 4
-            if grid[x,y] == 0:
+                    temp[x, y] = 0
+                else:
+                    temp[x, y] = Grid[x, y]
+            # rule 4
+            if Grid[x, y] == 0:
                 if ncount == 3:
-                    grid[x,y] = 1
+                    temp[x, y] = 1
+                else:
+                    temp[x, y] = Grid[x, y]
+    return temp
 
 # Grid printer
 def show(grid):
@@ -63,9 +75,13 @@ def show(grid):
             if y == len(grid)-1:
                 print("\n")
                 
-randgrid(grid) #Initialize the grid
+#randgrid(grid) #Initialize the grid
+blinker(grid) #Initialize the grid with a blinker pattern
+print("Init")
 show(grid) # Generation 0
-tick(grid) #Apply the rules
-show(grid) # Generation 1
+for i in range(3):
+    grid = tick(grid)
+    print("Tick")
+    show(grid)
                 
 print("---%s seconds---" % (time.clock() - start_time))
