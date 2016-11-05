@@ -33,7 +33,8 @@ def neighbors(posh,posv):
     num_living_cells=0
     for i in range(3):
         for j in range(3):
-            num_living_cells+=grid[posv+rot[j],posh+rot[i]]
+            if posv+rot[j] < len(grid) and posv+rot[j] >= 0 and posh+rot[i] < len(grid) and posh+rot[i] >= 0:
+                num_living_cells+=grid[posv+rot[j],posh+rot[i]]
     return num_living_cells-grid[posv,posh]
 
 #Apply the rules
