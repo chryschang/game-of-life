@@ -67,3 +67,4 @@ show(grid) # Generation 0
 tick(grid) #Apply the rules
 show(grid) # Generation 1
                 
+print("---%s seconds---" % (time.clock() - start_time))
