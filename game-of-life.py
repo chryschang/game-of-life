@@ -15,6 +15,14 @@ grid = np.zeros(10000).reshape(100,100)
 
 #Game
 
+#Takes as input the coordinates (x,y) and returns the sum of the neighbors
+def neighbors(posh,posv):
+    rot=[-1,0,1]
+    num_living_cells=0
+    for i in range(3):
+        for j in range(3):
+            num_living_cells+=grid[posv+rot[j],posh+rot[i]]
+    return num_living_cells-grid[posv,posh]
 
 
 
